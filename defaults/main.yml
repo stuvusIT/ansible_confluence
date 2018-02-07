@@ -1,0 +1,12 @@
+---
+confluence_java_home: /usr/lib/jvm/java-8-oracle
+confluence_java_opts: -Xms1024M -Xmx1024M
+
+confluence_shutdown_port: 8005
+confluence_connector_port: 8080
+confluence_connector_max_threads: 150
+confluence_connector_min_spare_threads: 25
+confluence_connector_connection_timeout: 20000
+confluence_connector_max_http_header_size: 8192
+confluence_connector_accept_count: 100
+confluence_context_path: ""

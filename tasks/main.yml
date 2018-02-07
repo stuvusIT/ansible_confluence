@@ -1,0 +1,109 @@
+---
+- name: Create a unix group
+  group:
+    name: confluence
+    system: true
+
+- name: Create a unix user
+  user:
+    name: confluence
+    group: confluence
+    comment: Confluence system user
+    shell: /bin/false
+    home: /opt/atlassian-confluence
+    createhome: no
+    system: true
+
+- name: Create installation directory
+  file:
+    path: /opt/atlassian-confluence
+    state: directory
+    owner: root
+    group: confluence
+    mode: 0755
+
+- name: Create data directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: confluence
+    mode: 0770
+  with_items:
+    - /var/lib/confluence
+    - /var/log/confluence
+
+- name: Download archive
+  get_url:
+    url: https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-{{ confluence_version }}.tar.gz
+    dest: /opt/.confluence-{{ confluence_version }}.tar.gz
+    owner: root
+    group: root
+    mode: 0644
+  register: download
+
+- name: Extract archive
+  unarchive:
+    src: /opt/.confluence-{{ confluence_version }}.tar.gz
+    dest: /opt/atlassian-confluence/
+    extra_opts: [ --strip-components=1 ] # This strips away the main directory in the archive
+    owner: root
+    group: root
+    mode: 0755
+    remote_src: true
+  when: download.changed
+
+- name: Create server.xml
+  template:
+    src: server.xml.j2
+    dest: /opt/atlassian-confluence/conf/server.xml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Symlink logs directory
+  file:
+    path: /opt/atlassian-confluence/logs
+    state: link
+    src: /var/log/confluence
+    force: true
+    owner: root
+    group: confluence
+
+- name: Grant write privileges
+  file:
+    path: /opt/atlassian-confluence/{{ item }}
+    owner: root
+    group: confluence
+    mode: 0775
+  with_items:
+    - conf
+    - temp
+    - webapps
+    - work
+
+- name: Set home directory
+  copy:
+    dest: /opt/atlassian-confluence/confluence/WEB-INF/classes/confluence-init.properties
+    content: "# Ansible managed - do not edit here!\nconfluence.home=/var/lib/confluence\n"
+
+- name: Set Java options
+  copy:
+    dest: /etc/default/confluence
+    content: "# Ansible managed - do not edit here!\nJAVA_OPTS='{{ confluence_java_opts }}'\n"
+
+- name: Create systemd unit
+  template:
+    src: confluence.service.j2
+    dest: /etc/systemd/system/confluence.service
+    owner: root
+    group: root
+    mode: 0644
+  register: unit
+
+- name: Enable and start
+  systemd:
+    name: confluence.service
+    state: started
+    enabled: true
+    daemon_reload: "{{ unit.changed }}"
