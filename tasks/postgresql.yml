@@ -1,0 +1,26 @@
+---
+- name: Create PostgreSQL user
+  postgresql_user:
+    name: "{{ confluence_postgres_user }}"
+    no_password_changes: true
+    role_attr_flags: LOGIN
+    # Connection to postgres
+    login_host: "{{ confluence_postgres_login_host }}"
+    login_user: "{{ confluence_postgres_login_user }}"
+    login_password: "{{ confluence_postgres_login_password | default(omit) }}"
+
+- name: Create PostgreSQL database
+  postgresql_db:
+    name: "{{ confluence_postgres_database }}"
+    owner: "{{ confluence_postgres_user }}"
+    # Connection to postgres
+    login_host: "{{ confluence_postgres_login_host }}"
+    login_user: "{{ confluence_postgres_login_user }}"
+    login_password: "{{ confluence_postgres_login_password | default(omit) }}"
+
+- name: Grant privileges to PostgreSQL database
+  postgresql_privs:
+    db: "{{ confluence_postgres_database }}"
+    role: "{{ confluence_postgres_user }}"
+    objs: ALL_IN_SCHEMA
+    privs: ALL

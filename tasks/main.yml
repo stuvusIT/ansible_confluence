@@ -92,6 +92,9 @@
     dest: /etc/default/confluence
     content: "# Ansible managed - do not edit here!\nJAVA_OPTS='{{ confluence_java_opts }}'\n"
 
+- include_tasks: postgresql.yml
+  when: confluence_configure_postgres
+
 - name: Create systemd unit
   template:
     src: confluence.service.j2

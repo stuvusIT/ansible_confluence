@@ -10,3 +10,9 @@ confluence_connector_connection_timeout: 20000
 confluence_connector_max_http_header_size: 8192
 confluence_connector_accept_count: 100
 confluence_context_path: ""
+
+confluence_configure_postgres: true
+confluence_postgres_login_host: localhost
+confluence_postgres_login_user: postgres
+confluence_postgres_user: confluence
+confluence_postgres_database: confluence
