@@ -24,6 +24,12 @@ Ubuntu and an [Oracle JVM (Confluence 7 needs at least Version 8)](https://githu
 | `confluence_connector_accept_count`         | `100`                        | Maximum concurrent `accept` syscalls for listening                                                                                                         |
 | `confluence_proxy_name`                     | ` `                          | Name of the proxy to run Confluence behind. This role assumes you use a proxy which offers confluence with TLS. Unencrypted connections are not supported. |
 | `confluence_context_path`                   | ` `                          | Context path to run Confluence under.                                                                                                                      |
+| `confluence_configure_postgres`             | `true`                       | Whether to configure a PostgreSQL uesr and database                                                                                                        |
+| `confluence_postgres_login_host`            | `localhost`                  | Host to connect to for setting up PostgreSQL                                                                                                               |
+| `confluence_postgres_login_user`            | `postgres`                   | User to connect with for setting up PostgreSQL                                                                                                             |
+| `confluence_postgres_login_password`        |                              | Password to connect with for setting up PostgreSQL                                                                                                         |
+| `confluence_postgres_user`                  | `confluence`                 | Name of the PostgreSQL user to create                                                                                                                      |
+| `confluence_postgres_database`              | `confluence`                 | Name of the PostgreSQL database to create                                                                                                                  |
 
 ## Example Playbook
 
