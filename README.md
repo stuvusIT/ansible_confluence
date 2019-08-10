@@ -6,30 +6,30 @@ Further configuration is only possible through the confluence administration int
 
 ## Requirements
 
-Ubuntu and an [Oracle JVM (Confluence 7 needs at least Version 8)](https://github.com/stuvusIT/oracle-java)
+Debian Buster
 
 ## Role Variables
 
-| Name                                        | Default/Required             | Description                                                                                                                                                |
-|---------------------------------------------|:----------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `confluence_version`                        | :heavy_check_mark:           | Version of Confluence to download and install                                                                                                              |
-| `confluence_java_home`                      | `/usr/lib/jvm/java-8-oracle` | Home directory of the Java installation to use                                                                                                             |
-| `confluence_java_opts`                      | `-Xms1024M -Xmx1024M`        | Options to pass to the JVM                                                                                                                                 |
-| `confluence_shutdown_port`                  | `8005`                       | Shutdown port for Confluence's server.xml                                                                                                                  |
-| `confluence_connector_port`                 | `8080`                       | Port to listen on for requests                                                                                                                             |
-| `confluence_connector_max_threads`          | `150`                        | Maximum threads to use for the connector                                                                                                                   |
-| `confluence_connector_min_spare_threads`    | `25`                         | Minimum amount of spare threads for the connector                                                                                                          |
-| `confluence_connector_connection_timeout`   | `20000`                      | Timeout to wait for requests                                                                                                                               |
-| `confluence_connector_max_http_header_size` | `8192`                       | Maximum header size for requests                                                                                                                           |
-| `confluence_connector_accept_count`         | `100`                        | Maximum concurrent `accept` syscalls for listening                                                                                                         |
-| `confluence_proxy_name`                     | ` `                          | Name of the proxy to run Confluence behind. This role assumes you use a proxy which offers confluence with TLS. Unencrypted connections are not supported. |
-| `confluence_context_path`                   | ` `                          | Context path to run Confluence under.                                                                                                                      |
-| `confluence_configure_postgres`             | `true`                       | Whether to configure a PostgreSQL uesr and database                                                                                                        |
-| `confluence_postgres_login_host`            | `localhost`                  | Host to connect to for setting up PostgreSQL                                                                                                               |
-| `confluence_postgres_login_user`            | `postgres`                   | User to connect with for setting up PostgreSQL                                                                                                             |
-| `confluence_postgres_login_password`        |                              | Password to connect with for setting up PostgreSQL                                                                                                         |
-| `confluence_postgres_user`                  | `confluence`                 | Name of the PostgreSQL user to create                                                                                                                      |
-| `confluence_postgres_database`              | `confluence`                 | Name of the PostgreSQL database to create                                                                                                                  |
+| Name                                        | Default/Required                            | Description                                                                                                                                                |
+|---------------------------------------------|:-------------------------------------------:|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `confluence_version`                        | :heavy_check_mark:                          | Version of Confluence to download and install                                                                                                              |
+| `confluence_java_home`                      | `/usr/lib/jvm/adoptopenjdk-8-hotspot-amd64` | Home directory of the Java installation to use                                                                                                             |
+| `confluence_java_opts`                      | `-Xms1024M -Xmx1024M`                       | Options to pass to the JVM                                                                                                                                 |
+| `confluence_shutdown_port`                  | `8005`                                      | Shutdown port for Confluence's server.xml                                                                                                                  |
+| `confluence_connector_port`                 | `8080`                                      | Port to listen on for requests                                                                                                                             |
+| `confluence_connector_max_threads`          | `150`                                       | Maximum threads to use for the connector                                                                                                                   |
+| `confluence_connector_min_spare_threads`    | `25`                                        | Minimum amount of spare threads for the connector                                                                                                          |
+| `confluence_connector_connection_timeout`   | `20000`                                     | Timeout to wait for requests                                                                                                                               |
+| `confluence_connector_max_http_header_size` | `8192`                                      | Maximum header size for requests                                                                                                                           |
+| `confluence_connector_accept_count`         | `100`                                       | Maximum concurrent `accept` syscalls for listening                                                                                                         |
+| `confluence_proxy_name`                     | ` `                                         | Name of the proxy to run Confluence behind. This role assumes you use a proxy which offers confluence with TLS. Unencrypted connections are not supported. |
+| `confluence_context_path`                   | ` `                                         | Context path to run Confluence under.                                                                                                                      |
+| `confluence_configure_postgres`             | `true`                                      | Whether to configure a PostgreSQL uesr and database                                                                                                        |
+| `confluence_postgres_login_host`            | `localhost`                                 | Host to connect to for setting up PostgreSQL                                                                                                               |
+| `confluence_postgres_login_user`            | `postgres`                                  | User to connect with for setting up PostgreSQL                                                                                                             |
+| `confluence_postgres_login_password`        |                                             | Password to connect with for setting up PostgreSQL                                                                                                         |
+| `confluence_postgres_user`                  | `confluence`                                | Name of the PostgreSQL user to create                                                                                                                      |
+| `confluence_postgres_database`              | `confluence`                                | Name of the PostgreSQL database to create                                                                                                                  |
 
 ## Example Playbook
 
