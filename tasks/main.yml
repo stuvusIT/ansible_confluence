@@ -8,9 +8,11 @@
     repo: "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ {{ ansible_distribution_release }} main"
     filename: openjdk
 
-- name: Install OpenJDK
+- name: Install Confluence dependencies
   apt:
-    name: adoptopenjdk-8-hotspot
+    name:
+      - adoptopenjdk-8-hotspot
+      - fontconfig
 
 - name: Create a unix group
   group:
