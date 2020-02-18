@@ -91,6 +91,7 @@
     owner: root
     group: confluence
     mode: 0775
+    recurse: yes
   with_items:
     - conf
     - temp
