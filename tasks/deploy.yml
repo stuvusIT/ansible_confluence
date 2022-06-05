@@ -1,0 +1,35 @@
+---
+- name: Download Confluence archive
+  get_url:
+    url: https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-{{ confluence_version }}.tar.gz
+    dest: "{{ global_cache_dir }}/confluence-{{ confluence_version }}.tar.gz"
+  become: false
+  delegate_to: localhost
+
+- name: Clear unarchive target directory
+  file:
+    path: /opt/atlassian-confluence-tmp
+    state: absent
+
+- name: Create unarchive target directory
+  file:
+    path: /opt/atlassian-confluence-tmp
+    state: directory
+
+- name: Unpack Confluence archive
+  unarchive:
+    src: "{{ global_cache_dir }}/confluence-{{ confluence_version }}.tar.gz"
+    dest: /opt/atlassian-confluence-tmp
+    owner: root
+    group: root
+    mode: 0755
+
+# `mv` on the same filesystem is atomic. This makes sure that the destination only exists when the
+# archive was completely unpacked (i.e. the unpacking was not interrupted).
+- name: Move Confluence directory into place
+  command: "mv /opt/atlassian-confluence-tmp/atlassian-confluence-{{ confluence_version }} /opt/"
+
+- name: Clear unarchive target directory
+  file:
+    path: /opt/atlassian-confluence-tmp
+    state: absent

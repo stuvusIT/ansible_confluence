@@ -18,6 +18,7 @@
   group:
     name: confluence
     system: true
+  notify: Restart confluence service
 
 - name: Create a unix user
   user:
@@ -28,14 +29,7 @@
     home: /opt/atlassian-confluence
     createhome: no
     system: true
-
-- name: Create installation directory
-  file:
-    path: /opt/atlassian-confluence
-    state: directory
-    owner: root
-    group: confluence
-    mode: 0755
+  notify: Restart confluence service
 
 - name: Create data directories
   file:
@@ -47,47 +41,32 @@
   with_items:
     - /var/lib/confluence
     - /var/log/confluence
+  notify: Restart confluence service
 
-- name: Download archive
-  get_url:
-    url: https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-{{ confluence_version }}.tar.gz
-    dest: /opt/.confluence-{{ confluence_version }}.tar.gz
-    owner: root
-    group: root
-    mode: 0644
-  register: download
-
-- name: Extract archive
-  unarchive:
-    src: /opt/.confluence-{{ confluence_version }}.tar.gz
-    dest: /opt/atlassian-confluence/
-    extra_opts: [ --strip-components=1 ] # This strips away the main directory in the archive
-    owner: root
-    group: root
-    mode: 0755
-    remote_src: true
-  when: download.changed
+- include_tasks: install.yml
 
 - name: Create server.xml
   template:
     src: server.xml.j2
-    dest: /opt/atlassian-confluence/conf/server.xml
+    dest: /opt/atlassian-confluence-{{ confluence_version }}/conf/server.xml
     owner: root
     group: root
     mode: 0644
+  notify: Restart confluence service
 
 - name: Symlink logs directory
   file:
-    path: /opt/atlassian-confluence/logs
+    path: /opt/atlassian-confluence-{{ confluence_version }}/logs
     state: link
     src: /var/log/confluence
     force: true
     owner: root
     group: confluence
+  notify: Restart confluence service
 
 - name: Grant write privileges
   file:
-    path: /opt/atlassian-confluence/{{ item }}
+    path: /opt/atlassian-confluence-{{ confluence_version }}/{{ item }}
     owner: root
     group: confluence
     mode: 0775
@@ -97,16 +76,19 @@
     - temp
     - webapps
     - work
+  notify: Restart confluence service
 
 - name: Set home directory
   copy:
-    dest: /opt/atlassian-confluence/confluence/WEB-INF/classes/confluence-init.properties
+    dest: /opt/atlassian-confluence-{{ confluence_version }}/confluence/WEB-INF/classes/confluence-init.properties
     content: "# Ansible managed - do not edit here!\nconfluence.home=/var/lib/confluence\n"
+  notify: Restart confluence service
 
 - name: Set Java options
   copy:
     dest: /etc/default/confluence
     content: "# Ansible managed - do not edit here!\nJAVA_OPTS='{{ confluence_java_opts }}'\n"
+  notify: Restart confluence service
 
 - include_tasks: postgresql.yml
   when: confluence_configure_postgres
@@ -118,11 +100,12 @@
     owner: root
     group: root
     mode: 0644
-  register: unit
+  notify:
+    - Reload systemd configuration
+    - Restart confluence service
 
 - name: Enable and start
   systemd:
     name: confluence.service
     state: started
     enabled: true
-    daemon_reload: "{{ unit.changed }}"

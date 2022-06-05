@@ -8,6 +8,7 @@
     login_host: "{{ confluence_postgres_login_host }}"
     login_user: "{{ confluence_postgres_login_user }}"
     login_password: "{{ confluence_postgres_login_password | default(omit) }}"
+  notify: Restart confluence service
 
 - name: Create PostgreSQL database
   postgresql_db:
@@ -17,6 +18,7 @@
     login_host: "{{ confluence_postgres_login_host }}"
     login_user: "{{ confluence_postgres_login_user }}"
     login_password: "{{ confluence_postgres_login_password | default(omit) }}"
+  notify: Restart confluence service
 
 - name: Grant privileges to PostgreSQL database
   postgresql_privs:
@@ -24,3 +26,4 @@
     role: "{{ confluence_postgres_user }}"
     objs: ALL_IN_SCHEMA
     privs: ALL
+  notify: Restart confluence service
