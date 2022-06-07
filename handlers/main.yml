@@ -1,0 +1,10 @@
+---
+- name: Reload systemd configuration
+  service:
+    daemon_reload: True
+
+- name: Restart confluence service
+  service:
+    name: confluence
+    enabled: true
+    state: restarted

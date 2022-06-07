@@ -1,0 +1,15 @@
+---
+- name: Check if the desired Confluence version exists
+  stat:
+    path: /opt/atlassian-confluence-{{ confluence_version }}
+  register: confluence_install_dir_stat
+
+- include_tasks: deploy.yml
+  when: not confluence_install_dir_stat.stat.exists
+
+- name: Install Confluence
+  file:
+    path: /opt/atlassian-confluence
+    state: link
+    src: /opt/atlassian-confluence-{{ confluence_version }}
+  notify: Restart confluence service
