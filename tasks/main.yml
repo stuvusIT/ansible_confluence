@@ -104,6 +104,8 @@
     - Reload systemd configuration
     - Restart confluence service
 
+- meta: flush_handlers
+
 - name: Enable and start
   systemd:
     name: confluence.service
