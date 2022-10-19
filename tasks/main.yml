@@ -35,7 +35,7 @@
   file:
     path: "{{ item }}"
     state: directory
-    owner: root
+    owner: confluence
     group: confluence
     mode: 0770
   with_items:
@@ -60,14 +60,14 @@
     state: link
     src: /var/log/confluence
     force: true
-    owner: root
+    owner: confluence
     group: confluence
   notify: Restart confluence service
 
 - name: Grant write privileges
   file:
     path: /opt/atlassian-confluence-{{ confluence_version }}/{{ item }}
-    owner: root
+    owner: confluence
     group: confluence
     mode: 0775
     recurse: yes
