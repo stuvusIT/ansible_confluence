@@ -39,6 +39,7 @@
     group: confluence
     mode: 0770
   with_items:
+    - /var/lib/catalina/temp
     - /var/lib/confluence
     - /var/log/confluence
   notify: Restart confluence service
@@ -50,8 +51,8 @@
     src: server.xml.j2
     dest: /opt/atlassian-confluence-{{ confluence_version }}/conf/server.xml
     owner: root
-    group: root
-    mode: 0644
+    group: confluence
+    mode: 0640
   notify: Restart confluence service
 
 - name: Symlink logs directory
@@ -62,20 +63,6 @@
     force: true
     owner: confluence
     group: confluence
-  notify: Restart confluence service
-
-- name: Grant write privileges
-  file:
-    path: /opt/atlassian-confluence-{{ confluence_version }}/{{ item }}
-    owner: confluence
-    group: confluence
-    mode: 0775
-    recurse: yes
-  with_items:
-    - conf
-    - temp
-    - webapps
-    - work
   notify: Restart confluence service
 
 - name: Set home directory

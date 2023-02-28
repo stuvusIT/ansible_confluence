@@ -20,8 +20,8 @@
   unarchive:
     src: "{{ global_cache_dir }}/confluence-{{ confluence_version }}.tar.gz"
     dest: /opt/atlassian-confluence-tmp
-    owner: root
-    group: root
+    owner: confluence
+    group: confluence
     mode: 0755
 
 # `mv` on the same filesystem is atomic. This makes sure that the destination only exists when the
