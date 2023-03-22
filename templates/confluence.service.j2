@@ -9,7 +9,7 @@ Type=simple
 SyslogIdentifier=confluence
 Environment="CATALINA_HOME=/opt/atlassian-confluence"
 Environment="CATALINA_BASE=/opt/atlassian-confluence"
-Environment="CATALINA_TMPDIR=/opt/atlassian-confluence/temp"
+Environment="CATALINA_TMPDIR=/var/lib/catalina/temp"
 Environment="JAVA_HOME={{ confluence_java_home }}"
 Environment="CLASSPATH=/opt/atlassian-confluence/bin/bootstrap.jar:/opt/atlassian-confluence/bin/tomcat-juli.jar"
 EnvironmentFile=-/etc/default/confluence
