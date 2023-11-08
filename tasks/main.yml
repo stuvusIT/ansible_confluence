@@ -1,17 +1,17 @@
 ---
-- name: Add AdoptOpenJDK key
+- name: Add Adoptium key
   apt_key:
-    url: https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public
+    url: https://packages.adoptium.net/artifactory/api/gpg/key/public
 
-- name: Add AdoptOpenJDK repo
+- name: Add Adoptium repo
   apt_repository:
-    repo: "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ {{ ansible_distribution_release }} main"
+    repo: "deb https://packages.adoptium.net/artifactory/deb/ {{ ansible_distribution_release }} main"
     filename: openjdk
 
 - name: Install Confluence dependencies
   apt:
     name:
-      - adoptopenjdk-8-hotspot
+      - temurin-8-jdk
       - fontconfig
 
 - name: Create a unix group
