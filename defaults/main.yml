@@ -1,5 +1,5 @@
 ---
-confluence_java_home: /usr/lib/jvm/adoptopenjdk-8-hotspot-amd64
+confluence_java_home: /usr/lib/jvm/temurin-8-jdk-amd64
 confluence_java_opts: -Xms1024M -Xmx1024M
 
 confluence_shutdown_port: 8005
